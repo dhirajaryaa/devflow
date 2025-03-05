@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -48,5 +49,14 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// use middleware 'pre' before run password save
+userSchema.pre("save", async function (next) {
+  if (!this.isModified(password)) return next();
+  this.password = bcrypt.hash(this.password, 12);
+  next();
+});
+
+
 
 export default User = mongoose.model("User", userSchema);
