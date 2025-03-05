@@ -53,9 +53,14 @@ const userSchema = new mongoose.Schema(
 // use middleware 'pre' before run password save
 userSchema.pre("save", async function (next) {
   if (!this.isModified(password)) return next();
-  this.password = bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
+
+// custom function for checking correct password
+userSchema.method.isPasswordCorrect = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 
 
