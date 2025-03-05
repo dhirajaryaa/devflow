@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const userSchema = new mongoose.Schema(
   {
@@ -30,22 +30,24 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "admin"],
-      default: "user",
+      enum: ['user', 'admin'],
+      default: 'user',
     },
-    avatar: {
-      type: String,
-      default: "",
-    },
+    avatar: [
+      {
+        url: String,
+        public_id: String,
+      },
+    ],
     projects: [
       {
         type: mongoose.Collection.objectId,
-        ref: "Project",
+        ref: 'Project',
       },
     ],
     userStatus: {
       type: String,
-      default: "Coding 🧑‍💻",
+      default: 'Coding 🧑‍💻',
     },
     accessToken: {
       type: String,
@@ -55,7 +57,7 @@ const userSchema = new mongoose.Schema(
 );
 
 // use middleware 'pre' before run password save
-userSchema.pre("save", async function (next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified(password)) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
@@ -94,4 +96,4 @@ userSchema.method.generateRefreshToken = async function () {
   );
 };
 
-export default User = mongoose.model("User", userSchema);
+export default User = mongoose.model('User', userSchema);
