@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
     ],
     projects: [
       {
-        type: mongoose.Collection.objectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
       },
     ],
@@ -58,18 +58,18 @@ const userSchema = new mongoose.Schema(
 
 // use middleware 'pre' before run password save
 userSchema.pre('save', async function (next) {
-  if (!this.isModified(password)) return next();
+  if (!this.isModified('password')) return next();
   this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
 // custom function for checking correct password
-userSchema.method.isPasswordCorrect = async function (password) {
+userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
 // custom function for generate accessToken
-userSchema.method.generateAccessToken = async function () {
+userSchema.methods.generateAccessToken = async function () {
   return await jwt.sign(
     {
       _id: this._id,
@@ -84,7 +84,7 @@ userSchema.method.generateAccessToken = async function () {
 };
 
 // custom function for generate refreshToken
-userSchema.method.generateRefreshToken = async function () {
+userSchema.methods.generateRefreshToken = async function () {
   return await jwt.sign(
     {
       _id: this._id,
@@ -96,4 +96,4 @@ userSchema.method.generateRefreshToken = async function () {
   );
 };
 
-export default User = mongoose.model('User', userSchema);
+export const User = mongoose.model('User', userSchema);

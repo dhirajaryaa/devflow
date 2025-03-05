@@ -43,9 +43,9 @@ const taskSchema = new mongoose.Schema(
         },
       },
     ],
-    timelog: [{ type: mongoose.Collection.objectId, ref: "TimeLog" }],
+    timelog: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeLog" }],
   },
   { timestamps: true }
 );
 
-export default Task = mongoose.model("Task", taskSchema);
+export const Task = mongoose.model("Task", taskSchema);

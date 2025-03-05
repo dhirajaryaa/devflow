@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const timelogSchema = new mongoose.Schema(
   {
     task: {
-      type: mongoose.Collection.objectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Task",
     },
     user: {
-      type: mongoose.Collection.objectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
     startTime: {
@@ -25,4 +25,4 @@ const timelogSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default TimeLog = mongoose.model("TimeLog", timelogSchema);
+export const TimeLog = mongoose.model("TimeLog", timelogSchema);

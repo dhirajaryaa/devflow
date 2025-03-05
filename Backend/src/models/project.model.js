@@ -14,18 +14,18 @@ const projectSchema = new mongoose.Schema(
       trim: true,
     },
     owner: {
-      type: mongoose.Collection.objectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
     member: [
       {
-        type: mongoose.Collection.objectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
     tasks: [
       {
-        type: mongoose.Collection.objectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Task",
       },
     ],
@@ -47,4 +47,4 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default Project = mongoose.model("Project", projectSchema);
+export const Project = mongoose.model("Project", projectSchema);
