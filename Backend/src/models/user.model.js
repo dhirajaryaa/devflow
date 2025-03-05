@@ -33,12 +33,10 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
-    avatar: [
-      {
-        url: String,
-        public_id: String,
-      },
-    ],
+    avatar: {
+      url: { type: String },
+      public_id: { type: String }
+    },
     projects: [
       {
         type: mongoose.Schema.Types.ObjectId,

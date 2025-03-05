@@ -12,6 +12,8 @@ app.use(
   })
 );
 
+app.use(express.static("./public"));
+
 app.use(
   cors({
     origin: '*', // allow any url request
