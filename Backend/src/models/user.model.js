@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       url: { type: String },
-      public_id: { type: String }
+      public_id: { type: String },
     },
     projects: [
       {
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'Coding 🧑‍💻',
     },
-    accessToken: {
+    refreshToken: {
       type: String,
     },
   },
