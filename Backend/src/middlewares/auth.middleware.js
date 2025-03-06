@@ -3,25 +3,31 @@ import ApiError from '../utils/apiError.js';
 import AsyncHandler from '../utils/asyncHandler.js';
 import { User } from '../models/user.model.js';
 
-export const AuthorizeUser = AsyncHandler(async (req, res, next) => {
-  const token =
-    req.cookies?.accessToken ||
-    req.headers('Authorization')?.replace('Bearer ', '');
+export const AuthorizeUser = AsyncHandler(async (req, res,next) => {
+  try {
+    // Extract token from cookies or Authorization header
+    const token =
+      req.cookies?.accessToken ||
+      req.header('Authorization')?.replace('Bearer ', '');
+      console.log(token);
+      
 
-  if (!token) {
-    throw new ApiError(401, 'Unauthorize Request');
-  }
-  //   decode jwt token
-  const decodedToken = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-  if (!decodedToken) {
-    throw new ApiError(401, 'Invalid Access Token!');
-  }
-  //   get user info
-  const user = await User.findById(decodedToken?._id);
-  if (!user) {
-    throw new ApiError(400, 'user not found!');
-  }
+    if (!token) {
+      throw new ApiError(401, 'Unauthorized Request');
+    }
 
-  req.user = user;
-  next();
+    // Decode JWT token
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    // Fetch user from database
+    const user = await User.findById(decodedToken?._id);
+    if (!user) {
+      throw new ApiError(404, 'User not found!');
+    }
+
+    req.user = user;
+    next();
+  } catch (error) {
+    next(new ApiError(401, 'Invalid or Expired Token!'));
+  }
 });
