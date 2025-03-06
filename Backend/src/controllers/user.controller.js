@@ -7,8 +7,8 @@ import { uploadOnCloudinary } from '../utils/cloudinary.js';
 const generateAccessAndRefreshToken = async (user) => {
   const accessToken = await user.generateAccessToken();
   const refreshToken = await user.generateRefreshToken();
-  userExits.refreshToken = refreshToken;
-  await userExits.save({ validateBeforeSave: false });
+  user.refreshToken = refreshToken;
+  await user.save({ validateBeforeSave: false });
   return { accessToken, refreshToken };
 };
 
