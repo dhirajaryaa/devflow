@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(
     methods: 'get,post,put,delete',
   })
 );
+
+app.use(cookieParser()); // ✅ Parses incoming cookies
 
 // routes middlewares setup
 import  {userRouter}  from './routers/user.routes.js';

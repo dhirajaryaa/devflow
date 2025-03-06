@@ -69,7 +69,7 @@ const loginUser = AsyncHandler(async (req, res) => {
   const isPasswordCorrect = await userExits.isPasswordCorrect(password);
   if (!isPasswordCorrect) {
     throw new ApiError(400, 'Password not Matched!) ');
-  };
+  }
   // generate access and refresh token then save on db
   const { accessToken, refreshToken } =
     await generateAccessAndRefreshToken(userExits);
@@ -78,18 +78,44 @@ const loginUser = AsyncHandler(async (req, res) => {
     '-password -refreshToken'
   );
 
-  const options ={
-    httpOnly:true,
-    secure:true
-  }
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
 
   return res
     .status(200)
-    .cookie('accessToken',accessToken,options)
-    .cookie('refreshToken',refreshToken,options)
-    .json(new ApiResponse(200, 'User Login successful :) ', {
-      user: user,accessToken,refreshToken
-    }));
+    .cookie('accessToken', accessToken, options)
+    .cookie('refreshToken', refreshToken, options)
+    .json(
+      new ApiResponse(200, 'User Login successful :) ', {
+        user: user,
+        accessToken,
+        refreshToken,
+      })
+    );
 });
 
-export { registerUser, loginUser };
+const logoutUser = AsyncHandler(async (req, res) => {
+  const user = await User.findByIdAndUpdate(
+    req.user?._id,
+    {
+      refreshToken: '',
+    },
+    { new: true }
+  ).select('-refreshToken -password');
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+
+return res
+  .status(200)
+  .clearCookie('accessToken', options)
+  .clearCookie('refreshToken', options)
+  .json(new ApiResponse(200, 'User Logout successful :)', user));
+});
+
+export { registerUser, loginUser, logoutUser };
