@@ -39,8 +39,19 @@ const getAllTasks = AsyncHandler(async (req, res) => {
   const tasks = await Task.find().limit(10);
 
   return res
-    .status(201)
-    .json(new ApiResponse(201, 'All Tasks Fetched :)', tasks));
+    .status(200)
+    .json(new ApiResponse(200, 'All Tasks Fetched :)', tasks));
 });
 
-export { createTask,getAllTasks };
+const getTask = AsyncHandler(async (req, res) => {
+  const { taskId } = req.params;
+
+  if (!taskId) {
+    throw new ApiError(400, 'Task Id Invalid!');
+  }
+  const task = await Task.findById(taskId);
+
+  return res.status(200).json(new ApiResponse(200, 'Task Fetched!', task));
+});
+
+export { createTask, getAllTasks,getTask };
