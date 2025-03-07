@@ -35,4 +35,12 @@ const createTask = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(201, 'Task created Successful', newTask));
 });
 
-export { createTask };
+const getAllTasks = AsyncHandler(async (req, res) => {
+  const tasks = await Task.find().limit(10);
+
+  return res
+    .status(201)
+    .json(new ApiResponse(201, 'All Tasks Fetched :)', tasks));
+});
+
+export { createTask,getAllTasks };
