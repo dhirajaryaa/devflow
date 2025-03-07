@@ -87,4 +87,15 @@ const updateTask = AsyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, 'Task updated', updateTask));
 });
 
-export { createTask, getAllTasks, getTask, updateTask };
+const deleteTask = AsyncHandler(async (req, res) => {
+  const { taskId } = req.params;
+
+  if (!taskId) {
+    throw new ApiError(400, 'Task Id Invalid!');
+  }
+  await Task.findByIdAndDelete(taskId);
+
+  return res.status(200).json(new ApiResponse(200, 'Task Deleted'));
+});
+
+export { createTask, getAllTasks, getTask, updateTask, deleteTask };
