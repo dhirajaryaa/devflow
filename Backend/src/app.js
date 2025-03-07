@@ -26,7 +26,9 @@ app.use(cookieParser()); // ✅ Parses incoming cookies
 
 // routes middlewares setup
 import  {userRouter}  from './routers/user.routes.js';
+import { taskRouter } from './routers/task.routes.js';
 // for users related all routes handle
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/tasks', taskRouter);
 
 export default app;

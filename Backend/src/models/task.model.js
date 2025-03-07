@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const taskSchema = new mongoose.Schema(
   {
@@ -14,14 +14,14 @@ const taskSchema = new mongoose.Schema(
     status: {
       // Todo, In Progress, Done
       type: String,
-      enum: ["todo", "progress", "Done"],
-      default: "todo",
+      enum: ['todo', 'progress', 'Done'],
+      default: 'todo',
     },
     priority: {
       // Low, Medium, High
       type: String,
-      enum: ["low", "medium", "high"],
-      default: "low",
+      enum: ['low', 'medium', 'high'],
+      default: 'low',
     },
     dueDate: {
       type: Date,
@@ -31,21 +31,19 @@ const taskSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    subtasks: [
-      {
-        title: {
-          type: String,
-          required: true,
-        },
-        completed: {
-          type: Boolean,
-          default: false,
-        },
+    subTasks: {
+      title: {
+        type: String,
+        required: true,
       },
-    ],
-    timelog: [{ type: mongoose.Schema.Types.ObjectId, ref: "TimeLog" }],
+      completed: {
+        type: Boolean,
+        default: false,
+      },
+    },
+    timelog: [{ type: mongoose.Schema.Types.ObjectId, ref: 'TimeLog' }],
   },
   { timestamps: true }
 );
 
-export const Task = mongoose.model("Task", taskSchema);
+export const Task = mongoose.model('Task', taskSchema);
