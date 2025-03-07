@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {AuthorizeUser} from '../middlewares/auth.middleware.js'
-import { createTask, getAllTasks, getTask } from '../controllers/task.controller.js';
+import { createTask, getAllTasks, getTask, updateTask } from '../controllers/task.controller.js';
 
 export const  taskRouter = Router();
 
@@ -9,4 +9,5 @@ export const  taskRouter = Router();
 taskRouter.post('/',AuthorizeUser,createTask); // create new task
 taskRouter.get('/',AuthorizeUser,getAllTasks); // get all task
 taskRouter.get('/:taskId',AuthorizeUser,getTask); // get single task
+taskRouter.put('/:taskId',AuthorizeUser,updateTask); // udpate single task
 

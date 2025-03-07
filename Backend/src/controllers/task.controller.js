@@ -54,4 +54,37 @@ const getTask = AsyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, 'Task Fetched!', task));
 });
 
-export { createTask, getAllTasks,getTask };
+const updateTask = AsyncHandler(async (req, res) => {
+  const { taskId } = req.params;
+  const { title, description, status, priority, dueDate, tags, subTasks } =
+    req.body;
+  // check empty filed
+  if (
+    !(title || description || status || priority || dueDate || tags || subTasks)
+  ) {
+    throw new ApiError(400, 'All Fields are Required!');
+  }
+  // checked empty task id
+  if (!taskId) {
+    throw new ApiError(400, 'Task Id Invalid!');
+  }
+
+  const task = await Task.findById(taskId);
+  const updateTask = await Task.findByIdAndUpdate(
+    task._id,
+    {
+      title: title || task.title,
+      description: description || task.description,
+      status: status || task.status,
+      priority: priority || task.priority,
+      dueDate: dueDate || task.dueDate,
+      tags: tags || task.tags,
+      subTasks: subTasks || task.subTasks,
+    },
+    { new: true }
+  );
+
+  return res.status(200).json(new ApiResponse(200, 'Task updated', updateTask));
+});
+
+export { createTask, getAllTasks, getTask, updateTask };
