@@ -4,9 +4,9 @@ import ApiResponse from '../utils/apiResponse.js';
 import { Project } from '../models/project.model.js';
 
 const createProject = AsyncHandler(async (req, res) => {
-  const { title, description, milestone } = req.body;
+    const { title, description, milestone, owner, member, tasks } = req.body;
   // check empty filed
-  if (!(title || description || milestone)) {
+  if (!(title || description || milestone || owner || member || tasks)) {
     throw new ApiError(400, 'All Fields are Required!');
   }
   // create new task
@@ -20,6 +20,9 @@ const createProject = AsyncHandler(async (req, res) => {
     title,
     description: description || '',
     milestone,
+    owner,
+    member,
+    tasks,
   });
 
   return res
