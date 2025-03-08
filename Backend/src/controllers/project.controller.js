@@ -4,7 +4,7 @@ import ApiResponse from '../utils/apiResponse.js';
 import { Project } from '../models/project.model.js';
 
 const createProject = AsyncHandler(async (req, res) => {
-    const { title, description, milestone, owner, member, tasks } = req.body;
+  const { title, description, milestone, owner, member, tasks } = req.body;
   // check empty filed
   if (!(title || description || milestone || owner || member || tasks)) {
     throw new ApiError(400, 'All Fields are Required!');
@@ -76,4 +76,17 @@ const updateProject = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, 'Project Updated', updatedProject));
 });
 
-export { createProject, getAllProjects, getProjectById, updateProject };
+const deleteProject = AsyncHandler(async (req, res) => {
+  const { projectId } = req.params;
+  if (!projectId) {
+    throw new ApiError(400, 'Project Id is Required');
+  }
+  const project = await Project.findById(projectId);
+  if (!project) {
+    throw new ApiError(404, 'Project Not Found');
+  }
+  await Project.findByIdAndDelete(projectId);
+  return res.status(200).json(new ApiResponse(200, 'Project Deleted'));
+});
+
+export { createProject, getAllProjects, getProjectById, updateProject,deleteProject };
