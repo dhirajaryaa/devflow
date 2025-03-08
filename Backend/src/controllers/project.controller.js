@@ -89,4 +89,30 @@ const deleteProject = AsyncHandler(async (req, res) => {
   return res.status(200).json(new ApiResponse(200, 'Project Deleted'));
 });
 
-export { createProject, getAllProjects, getProjectById, updateProject,deleteProject };
+const updateMilestone = AsyncHandler(async (req, res) => {
+  const { projectId } = req.params;
+  const { milestone } = req.body;
+  if (!projectId) {
+    throw new ApiError(400, 'Project Id is Required');
+  }
+  const project = await Project.findById(projectId);
+  if (!project) {
+    throw new ApiError(404, 'Project Not Found');
+  }
+  if (milestone) {
+    project.milestone = milestone;
+    await project.save();
+  }
+  return res
+    .status(200)
+    .json(new ApiResponse(201, 'Milestone Updated', project));
+});
+
+export {
+  createProject,
+  getAllProjects,
+  getProjectById,
+  updateProject,
+  deleteProject,
+  updateMilestone
+};
