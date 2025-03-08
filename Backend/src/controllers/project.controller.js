@@ -27,5 +27,27 @@ const createProject = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(201, 'Project created Successful', newProject));
 });
 
+const getAllProjects = AsyncHandler(async (req, res) => {
+  const projects = await Project.find();
+  return res
+    .status(200)
+    .json(new ApiResponse(200, 'All Projects', projects));
+});
 
-export { createProject };
+const getProjectById = AsyncHandler(async (req,res)=>{
+    const {projectId} = req.params;
+    if(!projectId){
+        throw new ApiError(400,'Project Id is Required');
+    }
+    const project = await Project.findById(projectId);
+    if(!project){
+        throw new ApiError(404,'Project Not Found');
+    }
+    return res
+        .status(200)
+        .json(new ApiResponse(200, 'Project', project));
+});
+
+
+
+export { createProject ,getAllProjects,getProjectById};

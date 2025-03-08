@@ -1,7 +1,9 @@
 import {Router} from 'express';
 import {AuthorizeUser} from '../middlewares/auth.middleware.js'
-import { createProject } from '../controllers/project.controller.js';
+import { createProject, getAllProjects, getProjectById } from '../controllers/project.controller.js';
 
 export const projectRouter = Router();
 
 projectRouter.post('/', AuthorizeUser,createProject);
+projectRouter.get('/', AuthorizeUser,getAllProjects);
+projectRouter.get('/:projectId', AuthorizeUser,getProjectById);
