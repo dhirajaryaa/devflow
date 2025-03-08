@@ -1,11 +1,14 @@
-import React from 'react'
+import Layout from "./layout/Layout";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <div>
-      <h1>DevFlow</h1>
-    </div>
-  )
+    <>
+      <Layout>
+        <Dashboard />
+      </Layout>
+    </>
+  );
 }
 
-export default App
+export default App;
